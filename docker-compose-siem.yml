@@ -287,7 +287,7 @@ services:
       - ELASTICSEARCH_HOSTS=https://es01:9200
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     networks:
-      - elastic        # ← réseau bridge, plus network_mode: host
+      - elastic      
     depends_on:
       - es01
     user: root
