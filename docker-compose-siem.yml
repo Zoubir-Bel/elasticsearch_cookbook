@@ -273,6 +273,27 @@ services:
     networks:
       - elastic
 
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    container_name: jupyter
+    restart: unless-stopped
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/home/jovyan/work
+      - certs:/home/jovyan/config/certs:ro
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - ELASTICSEARCH_HOSTS=https://es01:9200
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    networks:
+      - elastic        # ← réseau bridge, plus network_mode: host
+    depends_on:
+      - es01
+    user: root
+    command: >
+      bash -c "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
+
 volumes:
   certs:
     driver: local
